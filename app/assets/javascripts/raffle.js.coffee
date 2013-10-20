@@ -2,12 +2,11 @@
 # We can get and set variables and functions on this scope and we’ve set an entries variable # and set it to an array of entries for the raffle. In our view template we want to render 
 # this data as a list which we do like this:
 
-@RaffleCtrl = ($scope) ->
-	$scope.entries = [
-		{name: "Larry"}
-		{name: "Curly"}
-		{name: "Moe"}
-	]
+app = angular.module("Raffler", ["ngResource"])
+
+@RaffleCtrl = ($scope, $resource) ->
+	Entry = $resource("/entries/:id", {id: "@id"}, {update: {method: "PUT"}})
+	$scope.entries = Entry.query()
 
 	$scope.addEntry = ->
 		$scope.entries.push($scope.newEntry)
